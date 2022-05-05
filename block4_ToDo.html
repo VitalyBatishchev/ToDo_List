@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>block4</title>
+  <link rel="stylesheet" type="text/css" href="block4.css"/> 
+</head>
+<body>
+
+  <div class="mainElementControl">
+    <h1>ToDo_List</h1>
+
+    <div class="buttonDiv" dataTitle="для редактирования введите в поле текст и нажмите на молоток">
+      <input type="text" id="addTask" placeholder="ввод и редактирование">
+      <button onclick="onClickButton()">ADD</button>
+      <div class="messageImage"><p id="message"></p></div>
+      
+    </div>       
+  </div>
+
+  <div id="content"></div>
+
+  <script src="block4_ToDo.js"></script>
+</body>
+</html>
