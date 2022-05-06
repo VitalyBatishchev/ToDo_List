@@ -3,7 +3,7 @@ let valueInput = "";
 let input = null;
 let errorMessage = document.getElementById("message");
 
-window.onload = async function init() {
+window.onload = async () => {
   input = document.getElementById("addTask");
   input.addEventListener("input", updateValue);
   const resp = await fetch("http://localhost:8000/allTasks", {
@@ -16,56 +16,58 @@ window.onload = async function init() {
 
 const onClickButton = async () => {
   const valueTrim = valueInput.trim();
-  if (valueTrim) {
-    const resp = await fetch("http://localhost:8000/createTask", {
-     method: "POST",
-      headers: {
-      "Content-Type" : "application/json;charset=utf-8",
-      "Access-Control-Allow-Origin" : "*"
-      },
-      body: JSON.stringify({
-       text: valueTrim,
-       isCheck: false
-    })
-  });
-  const result = await resp.json();
-  allTasks = result.data;
-  valueInput = "";
-  input.value = "";
-  render();
-} else {
-    errorMessage.innerHTML = "Введите значение!!!"
-  } 
+    if (valueTrim) {
+      const resp = await fetch("http://localhost:8000/createTask", {
+        method: "POST",
+        headers: {
+          "Content-Type" : "application/json;charset=utf-8",
+          "Access-Control-Allow-Origin" : "*"
+        },
+        body: JSON.stringify({
+          text: valueTrim,
+          isCheck: false
+        })
+      });
+      const result = await resp.json();
+      allTasks = result.data;
+      valueInput = "";
+      input.value = "";
+      render();
+    } else {
+        errorMessage.innerHTML = "Введите значение!!!"
+      };
 };
 
 const updateValue = (event) => {
   valueInput = event.target.value
   if (valueInput) {
     errorMessage.innerHTML = ""
-  }
-}
+  };
+};
 
 const render = () => {
   const content = document.getElementById("content");
   while (content.firstChild) {
     content.removeChild(content.firstChild);
-  }
+  };
 
   allTasks.sort((i, j) => i.isCheck - j.isCheck);
   allTasks.map((item, index) => {
+    let itemChek = item.isCheck;
+    let itemText = item.text;
     const conteiner = document.createElement("div");
     conteiner.id = `task-${index}`;
     conteiner.className = "taskCont";
     const checkBox = document.createElement("input");
     checkBox.type = "checkBox";
-    checkBox.checked = item.isCheck;
+    checkBox.checked = itemChek;
     checkBox.onchange = () => onChangeCheckBox(index);
 
     checkBox.id = `checkBox-${index}`;
     conteiner.appendChild(checkBox);
     const text = document.createElement("p");
-    text.innerText = item.text;
-    text.className = item.isCheck ? "textTask doneText" : "textTask";
+    text.innerText = itemText;
+    text.className = itemChek ? "textTask doneText" : "textTask";
     conteiner.appendChild(text);
     content.appendChild(conteiner);
 
@@ -114,6 +116,7 @@ const onDeleteTask = async (index) => {
 };
 
 const updateTaskText = async (index) => {
+  let allTasksIndexChek = allTasks[index].isCheck;
   if (valueInput) {
     const resp = await fetch("http://localhost:8000/updateTask", {
       method: "PATCH",
@@ -124,7 +127,7 @@ const updateTaskText = async (index) => {
       body: JSON.stringify({
         "id": allTasks[index].id,
         "text": valueInput,
-        "isCheck": allTasks[index].isCheck
+        "isCheck": allTasksIndexChek
       })
     });
     const result = await resp.json();
