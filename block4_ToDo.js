@@ -97,8 +97,8 @@ const onChangeCheckBox = async (index) => {
       "Access-Control-Allow-Origin" : "*"
     },
     body: JSON.stringify({
-      "id": id,
-      "text": text,
+      id,
+      text,
       "isCheck": !isCheck
     })
   });
@@ -108,8 +108,7 @@ const onChangeCheckBox = async (index) => {
 };
 
 const onDeleteTask = async (index) => {
-  const itemText = allTasks[index];
-  const {id} = itemText;
+  const {id} = allTasks[index];
   const resp = await fetch(`http://localhost:8000/deleteTask?id=${id}`, {
     method: "DELETE",
   });
@@ -119,8 +118,7 @@ const onDeleteTask = async (index) => {
 };
 
 const updateTaskText = async (index) => {
-  const itemTask = allTasks[index];
-  const {id, isCheck} = itemTask;
+  const {id, isCheck} = allTasks[index];
   if (valueInput) {
     const resp = await fetch("http://localhost:8000/updateTask", {
       method: "PATCH",
@@ -129,9 +127,9 @@ const updateTaskText = async (index) => {
         "Access-Control-Allow-Origin" : "*"
       },
       body: JSON.stringify({
-        "id": id,
+        id,
         "text": valueInput,
-        "isCheck": isCheck
+        isCheck
       })
     });
     const result = await resp.json();
